@@ -52,7 +52,7 @@ async function mostrarUsuarios() {
 
 async function cargarDatosUsuario(id_usuario) {
     try {
-        const response = await fetch('');
+        const response = await fetch('api');
         if (!response.ok) throw new Error('Error al intentar cargar los datos del usuario');
 
         const usuario = await response.json();
@@ -72,7 +72,7 @@ async function cargarDatosUsuario(id_usuario) {
 
 //Funcion para guardar los cambios del usuario elegido(admin)
 
-async function guardarCambiosUsuario() {
+async function guardarCambiosUsuario(id_usuario) {
     const id_usuario = document.getElementById('id_usuario').value;
     const usuarioEditado = {
         Nombre: document.getElementById('usuario').value,
@@ -81,10 +81,10 @@ async function guardarCambiosUsuario() {
         Telefono: document.getElementById('telefono').value;
         DNI: document.getElementById('dni').value;
         Estado: document.getElementById('estado').value;
-        ID punto de Control: document.getElementById('id_punto_control').value
+        IDpuntoDeControl: document.getElementById('id_punto_control').value
     };
     try {
-        const response = await fetch('api', {
+        const response = await fetch('/api/Usuario/Actualizar', {
             method: 'PUT',
             headers: {
                 'Content.Type': 'application/json'
@@ -103,3 +103,40 @@ async function guardarCambiosUsuario() {
         console.error('Error al guardar cambios del usuario:', error);
     }
 }
+
+//Funcion para crear un nuevo usuario(admin)
+
+async function crearNuevoUsuario() {
+
+    const usuarioNuevo = {
+        usuario: document.getElementById('usuario').value,
+        contraseña: document.getElementById('contraseña').value,
+        email: document.getElementById('email').value,
+        telefono: document.getElementById('telefono').value,
+        dni: document.getElementById('dni').value,
+        estado: document.getElementById('estado').value,
+        idPuntoControl: document.getElementById('idPuntoControl').value
+    };
+
+    try {
+        const response = await fetch('/api/Usuario/Crear', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuarioNuevo)
+        });
+
+        if (response.ok) {
+            alert('El usuario se creo correctamente');
+
+        } else {
+            alert('Error al intentar crear el usuario');
+        }
+
+    } catch (error) {
+        console.error('Error al intentar crear el usuario', error);
+    }
+}
+
+
